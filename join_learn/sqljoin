@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Jun  1 11:27:27 2020
+
+@author: lg
+"""
+
+mysql> create database joinn;      # 创建数据库
+mysql> use joinn;                  # 使用已创建的数据库 
+mysql> set names utf8;           # 设置编码
+mysql> source /home/lg/lg/mysql_better/join_learn/runoob-mysql-join-test.sql  # 注意要把你的目录切换
+
+mysql> use joinn;
+
+
+mysql> show tables;
++-----------------+
+| Tables_in_joinn |
++-----------------+
+| runoob_tbl      |
+| tcount_tbl      |
++-----------------+
+2 rows in set (0.00 sec)
+
+
+mysql> select * from runoob_tbl;
++-----------+---------------+---------------+-----------------+
+| runoob_id | runoob_title  | runoob_author | submission_date |
++-----------+---------------+---------------+-----------------+
+|         1 | 学习 PHP      | 菜鸟教程      | 2017-04-12      |
+|         2 | 学习 MySQL    | 菜鸟教程      | 2017-04-12      |
+|         3 | 学习 Java     | RUNOOB.COM    | 2015-05-01      |
+|         4 | 学习 Python   | RUNOOB.COM    | 2016-03-06      |
+|         5 | 学习 C        | FK            | 2017-04-05      |
++-----------+---------------+---------------+-----------------+
+
+
+mysql> select * from tcount_tbl;
++---------------+--------------+
+| runoob_author | runoob_count |
++---------------+--------------+
+| 菜鸟教程      |           10 |
+| RUNOOB.COM    |           20 |
+| Google        |           22 |
++---------------+--------------+
+3 rows in set (0.01 sec)
+
+
+
+mysql> SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a INNER JOIN tcount_tbl b ON a.runoob_author = b.runoob_author;
++-----------+---------------+--------------+
+| runoob_id | runoob_author | runoob_count |
++-----------+---------------+--------------+
+|         1 | 菜鸟教程      |           10 |
+|         2 | 菜鸟教程      |           10 |
+|         3 | RUNOOB.COM    |           20 |
+|         4 | RUNOOB.COM    |           20 |
++-----------+---------------+--------------+
+4 rows in set (0.00 sec)
+
+
+
+
+
+mysql> SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM (runoob_tbl a INNER JOIN tcount_tbl b ON a.runoob_author = b.runoob_author);
++-----------+---------------+--------------+
+| runoob_id | runoob_author | runoob_count |
++-----------+---------------+--------------+
+|         1 | 菜鸟教程      |           10 |
+|         2 | 菜鸟教程      |           10 |
+|         3 | RUNOOB.COM    |           20 |
+|         4 | RUNOOB.COM    |           20 |
++-----------+---------------+--------------+
+4 rows in set (0.00 sec)
+
+
+
+
+
+mysql> SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a, tcount_tbl b WHERE a.runoob_author = b.runoob_author;
++-----------+---------------+--------------+
+| runoob_id | runoob_author | runoob_count |
++-----------+---------------+--------------+
+|         1 | 菜鸟教程      |           10 |
+|         2 | 菜鸟教程      |           10 |
+|         3 | RUNOOB.COM    |           20 |
+|         4 | RUNOOB.COM    |           20 |
++-----------+---------------+--------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM (runoob_tbl a, tcount_tbl b) WHERE a.runoob_author = b.runoob_author;
++-----------+---------------+--------------+
+| runoob_id | runoob_author | runoob_count |
++-----------+---------------+--------------+
+|         1 | 菜鸟教程      |           10 |
+|         2 | 菜鸟教程      |           10 |
+|         3 | RUNOOB.COM    |           20 |
+|         4 | RUNOOB.COM    |           20 |
++-----------+---------------+--------------+
+4 rows in set (0.01 sec)
+
+
+
+
+mysql> SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a LEFT JOIN tcount_tbl b ON a.runoob_author = b.runoob_author;
++-----------+---------------+--------------+
+| runoob_id | runoob_author | runoob_count |
++-----------+---------------+--------------+
+|         1 | 菜鸟教程      |           10 |
+|         2 | 菜鸟教程      |           10 |
+|         3 | RUNOOB.COM    |           20 |
+|         4 | RUNOOB.COM    |           20 |
+|         5 | FK            |         NULL |
++-----------+---------------+--------------+
+
